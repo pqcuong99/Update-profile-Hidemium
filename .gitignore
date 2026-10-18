@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Bản đóng gói (npm run package)
+dist/
+out/
+
+# File dữ liệu Excel (chứa UID profile thật) và file khóa tạm của Excel
+*.xlsx
+*.xlsm
+*.xls
+*.csv
+~$*
+
+# Log
+*.log
+npm-debug.log*
+
+# Hệ điều hành / editor
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+.claude/

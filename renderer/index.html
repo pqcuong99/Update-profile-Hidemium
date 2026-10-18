@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <title>Excel API Updater</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <img class="hero-logo" src="../images/logo_128.png" alt="Profile Updater" width="56" height="56" />
+      <div>
+        <h1>Excel API Updater</h1>
+        <p>Cập nhật Profile Name, Note và Proxy từ file Excel</p>
+      </div>
+    </header>
+
+    <main>
+      <section class="card controls">
+        <div class="control-row">
+          <button id="btnOpen" class="btn btn-primary">📁 Chọn file Excel</button>
+          <div class="file-info">
+            <span id="fileName" class="muted">Chưa chọn file</span>
+          </div>
+          <label class="field">
+            <span>Sheet</span>
+            <select id="sheetSelect" disabled></select>
+          </label>
+          <button id="btnReload" class="btn btn-ghost" disabled title="Đọc lại file Excel">⟳ Tải lại</button>
+        </div>
+
+        <div class="control-row">
+          <div class="field">
+            <span>Chế độ</span>
+            <div class="segmented" role="radiogroup" aria-label="Chế độ">
+              <label><input type="radio" name="mode" value="cloud" checked /><span>☁ Cloud</span></label>
+              <label><input type="radio" name="mode" value="local" /><span>💻 Local</span></label>
+            </div>
+          </div>
+          <label class="field grow">
+            <span>API</span>
+            <input id="baseUrl" type="text" value="http://127.0.0.1:2222" spellcheck="false" />
+          </label>
+          <label class="field">
+            <span>Nghỉ giữa các dòng (ms)</span>
+            <input id="delayMs" type="number" min="0" step="50" value="100" class="narrow" />
+          </label>
+        </div>
+        <div id="modeHint" class="hint hidden"></div>
+
+        <details class="rules">
+          <summary>Quy tắc cập nhật</summary>
+          <div class="rules-grid">
+            <div>
+              <b>Cột A</b> – UID profile. <b>B</b> – Profile Name, <b>C</b> – Note, <b>D</b> – Proxy.<br />
+              Cột nào <b>có giá trị</b> thì mới gọi API cho cột đó. Ô trống hoặc chữ <code>null</code> → bỏ qua.<br />
+              Chế độ <b>Local</b> gửi <code>is_local=true</code>, <b>Cloud</b> gửi <code>is_local=false</code>.
+            </div>
+            <div>
+              <b>Định dạng proxy hỗ trợ</b> (tự chuyển sang <code>HTTP|ip|port|user|pass</code>):
+              <ul>
+                <li><code>127.0.0.1:60007</code></li>
+                <li><code>103.182.23.51:60009:user:pass</code></li>
+                <li><code>http://user:pass@103.182.23.51:60009</code> (http, socks4, socks5, ssh)</li>
+                <li><code>SOCKS5|1.1.1.1|1234|user|pass</code> (giữ nguyên)</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="card actions">
+        <button id="btnRun" class="btn btn-primary" disabled>▶ Bắt đầu cập nhật</button>
+        <button id="btnStop" class="btn btn-danger" disabled>■ Dừng</button>
+        <button id="btnSelectFailed" class="btn btn-ghost" disabled title="Chỉ tick các dòng bị lỗi hoặc chưa chạy (VD: sau khi bấm Dừng)">
+          Chọn dòng lỗi / chưa chạy
+        </button>
+        <button id="btnExport" class="btn btn-ghost" disabled>💾 Xuất kết quả</button>
+        <div class="progress-wrap">
+          <div class="progress"><div id="progressBar" class="progress-bar"></div></div>
+          <div id="stats" class="stats">
+            <span>Tổng: <b id="statTotal">0</b></span>
+            <span>Đã chọn: <b id="statSelected">0</b></span>
+            <span class="ok">Thành công: <b id="statOk">0</b></span>
+            <span class="err">Lỗi: <b id="statErr">0</b></span>
+            <span class="skip">Bỏ qua: <b id="statSkip">0</b></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card table-card">
+        <div class="table-scroll">
+          <table id="dataTable">
+            <thead>
+              <tr>
+                <th class="col-check"><input type="checkbox" id="checkAll" checked title="Chọn tất cả" /></th>
+                <th class="col-row">Dòng</th>
+                <th class="col-uid">UID (A)</th>
+                <th>Profile Name (B)</th>
+                <th>Note (C)</th>
+                <th>Proxy (D)</th>
+                <th class="col-status">Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr class="empty">
+                <td colspan="7">Chọn file Excel để hiển thị dữ liệu</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <details class="card log-card">
+        <summary>Nhật ký API <span id="logCount" class="muted"></span></summary>
+        <pre id="log"></pre>
+      </details>
+    </main>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>

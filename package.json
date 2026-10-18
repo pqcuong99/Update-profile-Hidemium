@@ -1,0 +1,19 @@
+{
+  "name": "excel-api-updater",
+  "productName": "Excel API Updater",
+  "version": "1.0.0",
+  "description": "Cập nhật Profile Name, Note và Proxy của Hidemium từ file Excel",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-packager . \"Excel API Updater\" --platform=win32 --arch=x64 --out=dist --overwrite --icon=images/app.ico --ignore=\"^/dist\" --ignore=\"\\.xlsx$\""
+  },
+  "dependencies": {
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "electron": "^44.9.0"
+  }
+}
