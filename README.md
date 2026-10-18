@@ -4,9 +4,12 @@ App desktop (Electron) cập nhật **Profile Name**, **Note**, **Proxy** của 
 
 ## Chạy app
 
-- Bản đóng gói: `dist\Excel API Updater-win32-x64\Excel API Updater.exe`
+- Bản đóng gói: `dist\Updater_Profile_Hidemium-win32-x64\Updater_Profile_Hidemium.exe`
 - Chạy từ source: `npm install` rồi `npm start`
 - Đóng gói lại sau khi sửa code: `npm run package`
+- Đóng gói + nén zip để mang sang máy khác: `npm run zip`
+  → `dist\Updater_Profile_Hidemium-win32-x64.zip`. Máy đích chỉ cần Windows 64-bit và Hidemium đang chạy,
+  giải nén rồi mở `Updater_Profile_Hidemium.exe` (không cần cài Node.js).
 
 ## Cấu trúc file Excel
 
